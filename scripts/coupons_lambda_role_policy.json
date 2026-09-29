@@ -1,0 +1,29 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowCloudWatchLogsForCouponsLambdas",
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": [
+        "arn:aws:logs:*:*:log-group:/aws/lambda/coupons*",
+        "arn:aws:logs:*:*:log-group:/aws/lambda/coupons*:*"
+      ]
+    },
+    {
+      "Sid": "AllowDynamoDBCouponsTable",
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:*"
+      ],
+      "Resource": [
+        "arn:aws:dynamodb:*:*:table/coupons",
+        "arn:aws:dynamodb:*:*:table/coupons/index/*"
+      ]
+    }
+  ]
+}

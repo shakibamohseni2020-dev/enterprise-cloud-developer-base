@@ -71,7 +71,7 @@ awslocal lambda create-function \
     --runtime "nodejs14.x" \
     --zip-file fileb://coupons_get_by_id.zip \
     --handler "index.handler" \
-    --role "coupons_production_role"
+    --role "arn:aws:iam::000000000000:role/coupons_production_role"
 [ $? == 0 ] || fail 3 "Failed to create function"
 echo "coupons_get_by_id function created successfully"
 
@@ -92,7 +92,7 @@ awslocal lambda create-function \
     --runtime "nodejs14.x" \
     --zip-file fileb://coupons_update.zip \
     --handler "index.handler" \
-    --role "coupons_production_role"
+    --role "arn:aws:iam::000000000000:role/coupons_production_role"
 [ $? == 0 ] || fail 3 "Failed to create function"
 echo "coupons_get_by_id function created successfully"
 
@@ -113,7 +113,7 @@ awslocal lambda create-function \
     --runtime "nodejs14.x" \
     --zip-file fileb://coupons_get_token.zip \
     --handler "index.handler" \
-    --role "coupons_production_role"
+    --role "arn:aws:iam::000000000000:role/coupons_production_role"
 [ $? == 0 ] || fail 3 "Failed to create function"
 echo "coupons_get_token function created successfully"
 
@@ -134,7 +134,7 @@ awslocal lambda create-function \
     --runtime "nodejs14.x" \
     --zip-file fileb://coupons_to_secure.zip \
     --handler "index.handler" \
-    --role "coupons_production_role"
+    --role "arn:aws:iam::000000000000:role/coupons_production_role"
 [ $? == 0 ] || fail 3 "Failed to create function"
 echo "coupons_to_secure function created successfully"
 
@@ -155,7 +155,7 @@ awslocal lambda create-function \
     --runtime "nodejs14.x" \
     --zip-file fileb://coupons_import.zip \
     --handler "index.handler" \
-    --role "coupons_production_role"
+    --role "arn:aws:iam::000000000000:role/coupons_production_role"
 [ $? == 0 ] || fail 3 "Failed to create function"
 echo "coupons_import function created successfully"
 
@@ -176,7 +176,7 @@ awslocal lambda create-function \
     --runtime "nodejs14.x" \
     --zip-file fileb://coupons_import_presigned_url.zip \
     --handler "index.handler" \
-    --role "coupons_production_role"
+    --role "arn:aws:iam::000000000000:role/coupons_production_role"
 [ $? == 0 ] || fail 3 "Failed to create function"
 echo "coupons_import_presigned_url function created successfully"
 
@@ -197,7 +197,7 @@ awslocal lambda create-function \
     --runtime "nodejs14.x" \
     --zip-file fileb://coupons_event_publisher.zip \
     --handler "index.handler" \
-    --role "coupons_production_role"
+    --role "arn:aws:iam::000000000000:role/coupons_production_role"
 [ $? == 0 ] || fail 3 "Failed to create function"
 echo "coupons_event_publisher function created successfully"
 
@@ -218,7 +218,7 @@ awslocal lambda create-function \
     --runtime "nodejs14.x" \
     --zip-file fileb://coupons_notification_sender.zip \
     --handler "index.handler" \
-    --role "coupons_production_role"
+    --role "arn:aws:iam::000000000000:role/coupons_production_role"
 [ $? == 0 ] || fail 3 "Failed to create function"
 echo "coupons_notification_sender function created successfully"
 

@@ -1,0 +1,64 @@
+{
+  "info": {
+    "name": "coupons",
+    "description": "Newman tests for the Ideal Trip coupons API (localstack)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "api_id", "value": "REPLACE_WITH_API_ID" },
+    { "key": "stage", "value": "local" },
+    { "key": "base_url", "value": "http://{{api_id}}.execute-api.localhost.localstack.cloud:4566/{{stage}}" }
+  ],
+  "item": [
+    {
+      "name": "GET /coupons_poc",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Accept", "value": "application/json" }],
+        "url": {
+          "raw": "{{base_url}}/coupons_poc",
+          "host": ["{{base_url}}"],
+          "path": ["coupons_poc"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Response is JSON', function () {",
+              "  pm.response.to.be.json;",
+              "});",
+              "",
+              "pm.test('Response is a list of 3 coupons', function () {",
+              "  const body = pm.response.json();",
+              "  pm.expect(body).to.be.an('array');",
+              "  pm.expect(body).to.have.lengthOf(3);",
+              "});",
+              "",
+              "pm.test('Each coupon has the required fields', function () {",
+              "  const fields = ['coupon_id', 'title', 'description', 'coupon_code', 'campaign_id', 'provider_id', 'provider_name', 'start_date', 'end_date'];",
+              "  pm.response.json().forEach(function (coupon) {",
+              "    fields.forEach(function (field) {",
+              "      pm.expect(coupon).to.have.property(field);",
+              "    });",
+              "  });",
+              "});",
+              "",
+              "pm.test('First coupon matches the sample response', function () {",
+              "  const first = pm.response.json()[0];",
+              "  pm.expect(first.coupon_id).to.eql('319326de971100158f6fa0daeec978fba1f17e4b');",
+              "  pm.expect(first.coupon_code).to.eql('SAVE20');",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
