@@ -1,0 +1,11 @@
+{
+  "resource": "/coupons/{id}",
+  "path": "/coupons/319326de971100158f6fa0daeec978fba1f17e4b",
+  "httpMethod": "GET",
+  "headers": { "Accept": "application/json" },
+  "queryStringParameters": null,
+  "pathParameters": { "id": "319326de971100158f6fa0daeec978fba1f17e4b" },
+  "requestContext": { "resourcePath": "/coupons/{id}", "httpMethod": "GET", "stage": "local" },
+  "body": null,
+  "isBase64Encoded": false
+}

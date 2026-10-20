@@ -1,0 +1,11 @@
+{
+  "resource": "/coupons/{id}",
+  "path": "/coupons/319326de971100158f6fa0daeec978fba1f17e4b",
+  "httpMethod": "PUT",
+  "headers": { "Content-Type": "application/json" },
+  "queryStringParameters": null,
+  "pathParameters": { "id": "319326de971100158f6fa0daeec978fba1f17e4b" },
+  "requestContext": { "resourcePath": "/coupons/{id}", "httpMethod": "PUT", "stage": "local" },
+  "body": "{\"title\":\"Save 20% on Fairmont hotels\",\"description\":\"Save 20% on Fairmont hotels when you book your stay through December 2022\"}",
+  "isBase64Encoded": false
+}

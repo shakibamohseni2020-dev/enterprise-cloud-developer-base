@@ -5,20 +5,42 @@
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
-    { "key": "api_id", "value": "REPLACE_WITH_API_ID" },
-    { "key": "stage", "value": "local" },
-    { "key": "base_url", "value": "http://{{api_id}}.execute-api.localhost.localstack.cloud:4566/{{stage}}" }
+    {
+      "key": "api_id",
+      "value": "REPLACE_WITH_API_ID"
+    },
+    {
+      "key": "stage",
+      "value": "local"
+    },
+    {
+      "key": "base_url",
+      "value": "http://{{api_id}}.execute-api.localhost.localstack.cloud:4566/{{stage}}"
+    },
+    {
+      "key": "coupon_id",
+      "value": "319326de971100158f6fa0daeec978fba1f17e4b"
+    }
   ],
   "item": [
     {
       "name": "GET /coupons_poc",
       "request": {
         "method": "GET",
-        "header": [{ "key": "Accept", "value": "application/json" }],
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
         "url": {
           "raw": "{{base_url}}/coupons_poc",
-          "host": ["{{base_url}}"],
-          "path": ["coupons_poc"]
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "coupons_poc"
+          ]
         }
       },
       "event": [
@@ -55,6 +77,247 @@
               "  pm.expect(first.coupon_id).to.eql('319326de971100158f6fa0daeec978fba1f17e4b');",
               "  pm.expect(first.coupon_code).to.eql('SAVE20');",
               "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "GET /coupons/{id}",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/coupons/{{coupon_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "coupons",
+            "{{coupon_id}}"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Returns the requested coupon', function () {",
+              "  const coupon = pm.response.json();",
+              "  pm.expect(coupon.coupon_id).to.eql(pm.collectionVariables.get('coupon_id'));",
+              "  pm.expect(coupon.provider_id).to.eql('FAIRMONT');",
+              "  pm.expect(coupon.campaign_id).to.eql('CHRISTMAS2022');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "GET /coupons/{id} - not found",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/coupons/does-not-exist",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "coupons",
+            "does-not-exist"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 404', function () { pm.response.to.have.status(404); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "PUT /coupons/{id}",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/coupons/{{coupon_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "coupons",
+            "{{coupon_id}}"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"title\": \"Save 25% on Fairmont hotels\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Title was updated', function () {",
+              "  pm.expect(pm.response.json().title).to.eql('Save 25% on Fairmont hotels');",
+              "});",
+              "pm.test('Other fields were kept', function () {",
+              "  pm.expect(pm.response.json().coupon_code).to.eql('SAVE20');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "GET /coupons/{id} - after update",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/coupons/{{coupon_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "coupons",
+            "{{coupon_id}}"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Update was saved in the database', function () {",
+              "  pm.expect(pm.response.json().title).to.eql('Save 25% on Fairmont hotels');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "PUT /coupons/{id} - restore",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/coupons/{{coupon_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "coupons",
+            "{{coupon_id}}"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"title\": \"Save 20% on Fairmont hotels\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Original title restored', function () {",
+              "  pm.expect(pm.response.json().title).to.eql('Save 20% on Fairmont hotels');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "PUT /coupons/{id} - not found",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/coupons/does-not-exist",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "coupons",
+            "does-not-exist"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"title\": \"x\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 404', function () { pm.response.to.have.status(404); });"
             ]
           }
         }
