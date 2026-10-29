@@ -32,6 +32,10 @@
     {
       "key": "token",
       "value": ""
+    },
+    {
+      "key": "upload_url",
+      "value": ""
     }
   ],
   "item": [
@@ -573,6 +577,311 @@
               "  pm.expect(body.status).to.eql('success');",
               "  pm.expect(body.user).to.eql('tester1');",
               "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "POST /coupons/import",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/coupons/import",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "coupons",
+            "import"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"coupon_id\": \"319326de971100158f6fa0daeec978fba1f17e4b\", \"title\": \"Save 20% on Fairmont hotels\", \"description\": \"Save 20% on Fairmont hotels when you book your stay through December 2022\", \"coupon_code\": \"SAVE20\", \"campaign_id\": \"CHRISTMAS2022\", \"provider_id\": \"FAIRMONT\", \"provider_name\": \"Fairmont Hotels and Resorts\", \"start_date\": \"1669852800\", \"end_date\": \"1672444800\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Returns status success', function () { pm.expect(pm.response.json()).to.eql({ status: 'success' }); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "POST /coupons/import - coupons list",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/coupons/import",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "coupons",
+            "import"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"coupons\": [{\"coupon_id\": \"502a81d1564cf66c66e429d9e7c571f872151d2d\", \"title\": \"Save 25% in Super 8 hotels\"}, {\"coupon_id\": \"3f656e5fad7aa840efa7ab8c40118f011b9b9b5b\", \"title\": \"Save 10% on Hyatt hotels\"}]}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "POST /coupons/import - wrong file type",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "text/csv"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/coupons/import",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "coupons",
+            "import"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "coupon_id,title\n1,test",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 415', function () { pm.response.to.have.status(415); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "POST /coupons/import - unsafe coupon_id",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/coupons/import",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "coupons",
+            "import"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"coupon_id\": \"../evil\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 400', function () { pm.response.to.have.status(400); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "POST /coupons/import_presigned_url",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/coupons/import_presigned_url",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "coupons",
+            "import_presigned_url"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"filename\": \"319326de971100158f6fa0daeec978fba1f17e4b.json\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Returns an expiring PUT URL for the requested file', function () {",
+              "  const body = pm.response.json();",
+              "  pm.expect(body.status).to.eql('success');",
+              "  pm.expect(body.filename).to.eql('319326de971100158f6fa0daeec978fba1f17e4b.json');",
+              "  pm.expect(body.expiresIn).to.eql(300);",
+              "  pm.expect(body.url).to.include('/coupons/319326de971100158f6fa0daeec978fba1f17e4b.json');",
+              "  pm.expect(body.url).to.include('X-Amz-Expires=300');",
+              "  pm.collectionVariables.set('upload_url', body.url);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "PUT file with pre-signed URL",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{upload_url}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"coupon_id\": \"319326de971100158f6fa0daeec978fba1f17e4b\", \"title\": \"Save 20% on Fairmont hotels\", \"description\": \"Save 20% on Fairmont hotels when you book your stay through December 2022\", \"coupon_code\": \"SAVE20\", \"campaign_id\": \"CHRISTMAS2022\", \"provider_id\": \"FAIRMONT\", \"provider_name\": \"Fairmont Hotels and Resorts\", \"start_date\": \"1669852800\", \"end_date\": \"1672444800\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// The whole URL comes from the previous response, so set it here.",
+              "pm.request.url = pm.collectionVariables.get('upload_url');"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Upload succeeded', function () { pm.response.to.have.status(200); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "POST /coupons/import_presigned_url - bad filename",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/coupons/import_presigned_url",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "coupons",
+            "import_presigned_url"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"filename\": \"../secrets/file.exe\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 400', function () { pm.response.to.have.status(400); });"
             ]
           }
         }

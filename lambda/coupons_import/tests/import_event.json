@@ -1,0 +1,11 @@
+{
+  "resource": "/coupons/import",
+  "path": "/coupons/import",
+  "httpMethod": "POST",
+  "headers": { "Content-Type": "application/json" },
+  "queryStringParameters": null,
+  "pathParameters": null,
+  "requestContext": { "resourcePath": "/coupons/import", "httpMethod": "POST", "stage": "local" },
+  "body": "{\"coupons\":[{\"coupon_id\":\"502a81d1564cf66c66e429d9e7c571f872151d2d\",\"title\":\"Save 25% when booking 10 or more days in Super 8 hotels\",\"coupon_code\":\"STAY10PLUS\",\"campaign_id\":\"S8STAY10\",\"provider_id\":\"SUPER8\"},{\"coupon_id\":\"3f656e5fad7aa840efa7ab8c40118f011b9b9b5b\",\"title\":\"Save 10% on Hyatt hotels\",\"coupon_code\":\"TRAVEL10\",\"campaign_id\":\"DISCOVER\",\"provider_id\":\"Hyatt\"}]}",
+  "isBase64Encoded": false
+}

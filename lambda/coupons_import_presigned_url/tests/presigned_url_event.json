@@ -1,0 +1,11 @@
+{
+  "resource": "/coupons/import_presigned_url",
+  "path": "/coupons/import_presigned_url",
+  "httpMethod": "POST",
+  "headers": { "Content-Type": "application/json" },
+  "queryStringParameters": null,
+  "pathParameters": null,
+  "requestContext": { "resourcePath": "/coupons/import_presigned_url", "httpMethod": "POST", "stage": "local" },
+  "body": "{\"filename\":\"319326de971100158f6fa0daeec978fba1f17e4b.json\"}",
+  "isBase64Encoded": false
+}
