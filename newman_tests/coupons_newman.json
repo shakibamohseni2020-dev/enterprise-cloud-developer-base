@@ -20,6 +20,18 @@
     {
       "key": "coupon_id",
       "value": "319326de971100158f6fa0daeec978fba1f17e4b"
+    },
+    {
+      "key": "username",
+      "value": "tester1"
+    },
+    {
+      "key": "password",
+      "value": "Pc4RM0AMKy5aSGfD"
+    },
+    {
+      "key": "token",
+      "value": ""
     }
   ],
   "item": [
@@ -318,6 +330,249 @@
             "type": "text/javascript",
             "exec": [
               "pm.test('Status code is 404', function () { pm.response.to.have.status(404); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "POST /token",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/token",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "token"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\":\"{{username}}\",\"password\":\"{{password}}\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Returns token and expiresIn', function () {",
+              "  const body = pm.response.json();",
+              "  pm.expect(body.token).to.be.a('string').and.not.be.empty;",
+              "  pm.expect(body.token.split('.')).to.have.lengthOf(3);",
+              "  pm.expect(body.expiresIn).to.eql(3600);",
+              "  pm.collectionVariables.set('token', body.token);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "POST /token - wrong password",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/token",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "token"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\":\"{{username}}\",\"password\":\"wrong-password\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 403', function () { pm.response.to.have.status(403); });",
+              "pm.test('No token returned', function () { pm.expect(pm.response.json().token).to.be.undefined; });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "POST /token - unknown user",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/token",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "token"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\":\"nobody\",\"password\":\"{{password}}\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 403', function () { pm.response.to.have.status(403); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "GET /coupons/to_secure - no token",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/coupons/to_secure",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "coupons",
+            "to_secure"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 403', function () { pm.response.to.have.status(403); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "GET /coupons/to_secure - invalid token",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer not.a.realtoken"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/coupons/to_secure",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "coupons",
+            "to_secure"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 403', function () { pm.response.to.have.status(403); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "GET /coupons/to_secure - valid token",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/coupons/to_secure",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "coupons",
+            "to_secure"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Request is authorized for tester1', function () {",
+              "  const body = pm.response.json();",
+              "  pm.expect(body.status).to.eql('success');",
+              "  pm.expect(body.user).to.eql('tester1');",
+              "});"
             ]
           }
         }

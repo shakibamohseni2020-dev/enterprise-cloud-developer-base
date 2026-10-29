@@ -1,0 +1,11 @@
+{
+  "resource": "/token",
+  "path": "/token",
+  "httpMethod": "POST",
+  "headers": { "Content-Type": "application/json" },
+  "queryStringParameters": null,
+  "pathParameters": null,
+  "requestContext": { "resourcePath": "/token", "httpMethod": "POST", "stage": "local" },
+  "body": "{\"username\":\"tester1\",\"password\":\"Pc4RM0AMKy5aSGfD\"}",
+  "isBase64Encoded": false
+}

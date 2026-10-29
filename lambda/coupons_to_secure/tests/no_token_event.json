@@ -1,0 +1,11 @@
+{
+  "resource": "/coupons/to_secure",
+  "path": "/coupons/to_secure",
+  "httpMethod": "GET",
+  "headers": { "Accept": "application/json" },
+  "queryStringParameters": null,
+  "pathParameters": null,
+  "requestContext": { "resourcePath": "/coupons/to_secure", "httpMethod": "GET", "stage": "local" },
+  "body": null,
+  "isBase64Encoded": false
+}
