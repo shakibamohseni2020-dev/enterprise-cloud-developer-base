@@ -1,0 +1,11 @@
+{
+  "resource": "/coupons/event_publisher",
+  "path": "/coupons/event_publisher",
+  "httpMethod": "POST",
+  "headers": { "Content-Type": "application/json" },
+  "queryStringParameters": null,
+  "pathParameters": null,
+  "requestContext": { "resourcePath": "/coupons/event_publisher", "httpMethod": "POST", "stage": "local" },
+  "body": "{\"event_id\":\"87dff2de32be4d0f51257b5b5074754241fb9055\",\"event_type\":\"coupon_created\",\"provider_id\":\"FAIRMONT\",\"campaign_id\":\"CHRISTMAS2022\",\"coupon_id\":\"319326de971100158f6fa0daeec978fba1f17e4b\",\"title\":\"Save 20% on Fairmont hotels\",\"description\":\"Save 20% on Fairmont hotels when you book your stay through December 2022\",\"coupon_code\":\"SAVE20\",\"start_date\":\"1669852800\",\"end_date\":\"1672444800\"}",
+  "isBase64Encoded": false
+}

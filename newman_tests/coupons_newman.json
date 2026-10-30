@@ -886,6 +886,185 @@
           }
         }
       ]
+    },
+    {
+      "name": "POST /coupons/event_publisher",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/coupons/event_publisher",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "coupons",
+            "event_publisher"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"event_id\": \"87dff2de32be4d0f51257b5b5074754241fb9055\", \"event_type\": \"coupon_created\", \"provider_id\": \"FAIRMONT\", \"campaign_id\": \"CHRISTMAS2022\", \"coupon_id\": \"319326de971100158f6fa0daeec978fba1f17e4b\", \"title\": \"Save 20% on Fairmont hotels\", \"description\": \"Save 20% on Fairmont hotels when you book your stay through December 2022\", \"coupon_code\": \"SAVE20\", \"start_date\": \"1669852800\", \"end_date\": \"1672444800\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Event was put on a shard of the coupons stream', function () {",
+              "  const body = pm.response.json();",
+              "  pm.expect(body.status).to.eql('success');",
+              "  pm.expect(body.shardId).to.match(/^shardId-/);",
+              "  pm.expect(body.sequenceNumber).to.be.a('string').and.not.be.empty;",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "POST /coupons/event_publisher - missing ids",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/coupons/event_publisher",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "coupons",
+            "event_publisher"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"title\": \"No ids\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 400', function () { pm.response.to.have.status(400); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "POST /coupons/notification_sender",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/coupons/notification_sender",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "coupons",
+            "notification_sender"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"event_id\": \"87dff2de32be4d0f51257b5b5074754241fb9055\", \"event_type\": \"coupon_created\", \"coupon_id\": \"319326de971100158f6fa0daeec978fba1f17e4b\", \"title\": \"Save 20% on Fairmont hotels\", \"description\": \"Save 20% on Fairmont hotels when you book your stay through December 2022\", \"coupon_code\": \"SAVE20\", \"start_date\": \"1669852800\", \"end_date\": \"1672444800\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Notification was published to the topic', function () {",
+              "  const body = pm.response.json();",
+              "  pm.expect(body.status).to.eql('success');",
+              "  pm.expect(body.messageId).to.be.a('string').and.not.be.empty;",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "POST /coupons/notification_sender - missing details",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/coupons/notification_sender",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "coupons",
+            "notification_sender"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"coupon_id\": \"only-an-id\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 400', function () { pm.response.to.have.status(400); });"
+            ]
+          }
+        }
+      ]
     }
   ]
 }
